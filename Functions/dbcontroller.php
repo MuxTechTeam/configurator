@@ -29,5 +29,14 @@ class DBController {
 		$rowcount = mysqli_num_rows($result);
 		return $rowcount;	
 	}
+	function inserQuery($query) {
+    
+       $result = mysqli_query($this->conn , $query);
+
+         if ($result) {
+             
+             return $result;
+            }
+	}
 }
 ?>

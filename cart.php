@@ -100,8 +100,10 @@ switch($_GET["action"]) {
     </div>
     <ul class="nav navbar-nav">
       <li><a href="index.php">Home</a></li>
-      <li class="active"><a href="cart.php">Cart</a></li> 
-      <li ><a href="contact-us.php">Contact Us</a></li> 
+      <li class="active"><a href="cart.php"> 
+				<span class='badge badge-warning' id='lblCartCount'> <?=(isset($_SESSION["cart_item"]))?count($_SESSION["cart_item"]):0;?> </span>
+				Cart</a></li> 
+      <!-- <li ><a href="contact-us.php">Contact Us</a></li>  -->
     </ul>
   </div>
 </nav>
@@ -129,7 +131,7 @@ if(isset($_SESSION["cart_item"])){
         $item_price = $item["quantity"]*$item["price"];
 		?>
 				<tr>
-				<td><img src="<?php echo $item["image"]; ?>" class="cart-item-image" /><?php echo $item["name"]; ?></td>
+				<td><img src="<?php echo $item["image"]; ?>"  class="cart-item-image" /><?php echo $item["name"]; ?></td>
 				<td><?php echo $item["code"]; ?></td>
 				<td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
 				<td  style="text-align:right;"><?php echo "$ ".$item["price"]; ?></td>
@@ -166,13 +168,13 @@ if(isset($_SESSION["cart_item"])){
 <div id="product-grid">
 	<div class="txt-heading">Popular Selected Products</div>
 	<?php
-	$product_array = $db_handle->runQuery("SELECT * FROM orders ORDER BY orderid ASC");
+	$product_array = $db_handle->runQuery("SELECT * FROM orders ORDER BY orderid ASC limit 3");
 	if (!empty($product_array)) { 
 		foreach($product_array as $key=>$value){
 	?>
 		<div class="product-item">
 			<form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["orderid"]; ?>">
-			<div class="product-image"><img src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
+			<div class="product-image"><img class="img-responsive" src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
 			<div class="product-tile-footer">
 			<div class="product-title"><?php echo $product_array[$key]["ProductName"]; ?></div>
 			<div class="product-price"><?php echo "$".$product_array[$key]["Price"]; ?></div>

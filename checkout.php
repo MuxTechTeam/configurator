@@ -1,4 +1,9 @@
-<<!DOCTYPE html>
+<?php
+session_start();
+require_once("functions/dbcontroller.php");
+$db_handle = new DBController();
+?>
+<!DOCTYPE html>
 <html>
 <html lang="en">
     <head>
@@ -124,51 +129,66 @@ span.price {
             </div>
             <ul class="nav navbar-nav">
              <li class="active"><a href="index.php">Home</a></li>
-            <li ><a href="cart.php">Cart</a></li> 
-            <li ><a href="contact-us.php">Contact Us</a></li> 
+            <li ><a href="cart.php"><span class='badge badge-warning' id='lblCartCount'> <?=(isset($_SESSION["cart_item"]))?count($_SESSION["cart_item"]):0;?> </span> Cart</a></li> 
+            <!-- <li ><a href="contact-us.php">Contact Us</a></li>  -->
             </ul>
           </div>
         </nav>
-<div class="row">
-  <div class="col-75">
-    <div class="container" id="checkoutForm">
-      <form action="/action_page.php">
-<div class="col-50" >
-            <h3>Payment</h3>
-            <label for="fname">Accepted Cards</label>
-            <div class="icon-container">
-              <i class="fa fa-cc-visa" style="color:navy;"></i>
-              <i class="fa fa-cc-amex" style="color:blue;"></i>
-              <i class="fa fa-cc-mastercard" style="color:red;"></i>
-              <i class="fa fa-cc-discover" style="color:orange;"></i>
+ <?php if(!empty($_GET["postdata"])) {
+      // $inserQuery = "INSERT INTO `varation`( `PartId`, `Productid`,   `VariationName`, `VariationValue`, `VariationPrice` , VariationPic) VALUES ('$PartId', '$Productid' , '$VariationName', '$VariationValue' , '$VariationPrice' , '$Variationpic')";
+      if(!empty($_POST["name"])){
+      foreach($_SESSION["cart_item"] as $key => $item){
+        if(!empty($item["name"])){
+        $inserQuery = "INSERT INTO 
+                `orders`( 
+                `ProductName`, `Username`,   `Contact`, `Location`, `Picture` , `Price`
+                  ) 
+                VALUES 
+                (
+                '".$item["name"]."', '".$_POST["name"]."' , 
+                '".$_POST["phone"]."', '".$_POST["address"]."' , 
+                '".$item["image"]."' , '".$item["price"]."'
+                )";
+        $response = $db_handle->inserQuery($inserQuery);
+        }
+      }
+      unset($_SESSION["cart_item"]);
+    }
+      if($response){ ?>
+      <div class="container" id="checkoutForm">
+        <div class="alert alert-primary" role="alert">
+          Thanks For your order , You will be notified via email you provided about delivery details.
+        </div> 
+      </div>       
+  <?php }
+
+   }else{?>
+      <form action="checkout.php?postdata=1" method="post">
+        <div class="container" id="checkoutForm">
+            
+              <div class="col-50" >
+                <h3>Payment</h3>
+                <label for="fname">On Delivery</label>
+                <div class="icon-container">
+                  <i class="fa fa-cc-visa" style="color:navy;"></i>
+                  <i class="fa fa-cc-amex" style="color:blue;"></i>
+                  <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                  <i class="fa fa-cc-discover" style="color:orange;"></i>
+                </div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter Name">
+                <label for="email">Email Address</label>
+                <input type="text" id="email" name="email"> 
+                <label for="email">Phone Number</label>
+                <input type="text" id="phone" name="phone"> 
+                <label for="address"> Shipping Address</label>
+                <textarea id="address" cols="148" name="address" ></textarea>   
+               
+              </div> 
+            <input type="submit" value="Continue to checkout" class="btn">
             </div>
-            <label for="cname">Name on Card</label>
-            <input type="text" id="cname" name="cardname" placeholder="Enter Name">
-            <label for="cddress">Address</label>
-            <input type="text" id="cname" name="cardname" placeholder="Enter Name">
-            <label for="ccnum">Credit card number</label>
-            <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
-            <label for="expmonth">Exp Month</label>
-            <input type="text" id="expmonth" name="expmonth" placeholder="September">
-            <div class="row">
-              <div class="col-50">
-                <label for="expyear">Exp Year</label>
-                <input type="text" id="expyear" name="expyear" placeholder="2018">
-              </div>
-              <div class="col-50">
-                <label for="cvv">CVV</label>
-                <input type="text" id="cvv" name="cvv" placeholder="352">
-              </div>
-            </div>
-          </div>
-            <label>
-          <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
-        </label>
-        <input type="submit" value="Continue to checkout" class="btn">
-        </div>
-        
-      </form>
-    </div>
-  </div>
+            
+        </form> 
+      <?php } ?>
   </body>
 </html>
