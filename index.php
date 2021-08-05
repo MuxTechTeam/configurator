@@ -109,7 +109,7 @@ $allproductss = $db->getproducts();
 								<span class="ti-angle-left"></span><span class="tab-space">Back</span>
 							</div>	
 							<div class="top-nav-name col-xs-12" data-toggle="collapse">
-								<span><?php echo $row['ProductName']; ?></span>
+								<span id="productnamecontainer"><?php echo $row['ProductName']; ?></span>
 							</div>
 							<?php   
 							while($or = mysqli_fetch_array($allproductss)){
@@ -226,7 +226,7 @@ $allproductss = $db->getproducts();
 							<br>
 							<br>
 							<h4> Price with Variation </h4>
-							<form method="post" id="cart_form" action="cart.php?action=add&code=1">
+							<form method="post" id="cart_form" action="cart.php?action=addDirect&code=1" enctype="multipart/form-data">
 							<ul class="list-group row" id="test">
 								
 							<?php 
@@ -249,7 +249,7 @@ $allproductss = $db->getproducts();
 								</li>
 								<?php } ?>
 								<input type="hidden" name="selectedParts" id="selectedParts" value="<?php echo implode(',',$partIDs);?>">
-								
+								<input type="hidden" name="productNameInput" id="productNameInput">
 								<li style="line-height:35px;" class="total list-group-summary col-xs-8">
 									<span class="chat-img pull-left">
 										<span class="tab-space"></span>
@@ -277,11 +277,14 @@ $allproductss = $db->getproducts();
 								<span class="ti-sharethis"></span><span class="tab-space"></span>
 								<span id="someButton">Order</span>
 							</div>
+							<input type="hidden" name="base64image" form="cart_form" id="base64image">
 							<div class="top-nav col-xs-6 push-active"> 
-								<input type="hidden" name="selectedImages" id="selectedImages">
 								<span class="ti-location-arrow"></span><span class="tab-space"></span>
 								<a href="javascript:{}" onclick="document.getElementById('cart_form').submit();">add to cart</a>
 								 
+							</div>
+							<div id="creadImageContainer" style="display: none;">
+
 							</div>
 							 	</form>
 						</div>
@@ -296,7 +299,8 @@ $allproductss = $db->getproducts();
 		<script src="js/views.js"></script>
 		<script src="js/navigation.js"></script>
 		<script src="js/utility.js"></script>
-		 
+		<script src="js/divToImage.js"></script>
+		
 		<script type="text/javascript">
 				
 function openpartmaterial(id){
@@ -381,7 +385,10 @@ function openpartmaterial(id){
 		selcIDs.push($(val).data('partid'));
 	});
 	$('#selectedParts').val(selcIDs.join());
-  
+  	// make a sigle image and create url
+  	makeSingleImage();
+  	$("#productNameInput").val($('#productnamecontainer').html());
+
 	}
 	 
 	$('#someButton').click(function(){
@@ -393,6 +400,15 @@ function openpartmaterial(id){
 	  // alert(images);      
 	});
 
+function makeSingleImage() {
+
+var divsToJPG = new DivsToJPG($('#desk-sx'));
+var url64 = divsToJPG.img.src;
+$('#base64image').val(url64);
+
+}
+
+ 
 
 		</script>
 	

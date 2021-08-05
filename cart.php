@@ -2,8 +2,43 @@
 session_start();
 require_once("functions/dbcontroller.php");
 $db_handle = new DBController();
-if(!empty($_GET["action"])) {
+ 
+if(!empty($_GET["action"]) or !empty($_POST["totalPrice"])) {
+// productID
+	// totalPrice
+	// productNameInput
 switch($_GET["action"]) {
+	case "addDirect":
+	if(!empty($_POST["totalPrice"])) {
+
+		$img = $_POST['base64image']; // Your data 'data:image/png;base64,AAAFBfj42Pj4';
+		$img = str_replace('data:image/png;base64,', '', $img);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);
+		$imageName = 'convertedImages/'.time().'img.png';
+		file_put_contents($imageName , $data);
+
+		$productByCode =  array();
+		$itemArray = array($_POST["productID"]=>array('name'=>$_POST["productNameInput"], 'code'=>$_POST["productID"], 'quantity'=>1, 'price'=>$_POST["totalPrice"], 'image'=>$imageName ));
+			
+			if(!empty($_SESSION["cart_item"])) {
+				if(in_array($_POST["productID"],array_keys($_SESSION["cart_item"]))) {
+					foreach($_SESSION["cart_item"] as $k => $v) {
+							if($_POST["productID"] == $k) {
+								if(empty($_SESSION["cart_item"][$k]["quantity"])) {
+									$_SESSION["cart_item"][$k]["quantity"] = 0;
+								}
+								$_SESSION["cart_item"][$k]["quantity"] += 1;
+							}
+					}
+				} else {
+					$_SESSION["cart_item"] = array_merge($_SESSION["cart_item"],$itemArray);
+				}
+			} else {
+				$_SESSION["cart_item"] = $itemArray;
+			}
+		}
+	break;
 	case "add":
 		if(!empty($_POST["quantity"])) {
 			$productByCode = $db_handle->runQuery("SELECT * FROM orders WHERE orderid='" . $_GET["code"] . "'");
@@ -99,7 +134,7 @@ if(isset($_SESSION["cart_item"])){
 				<td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
 				<td  style="text-align:right;"><?php echo "$ ".$item["price"]; ?></td>
 				<td  style="text-align:right;"><?php echo "$ ". number_format($item_price,2); ?></td>
-				<td style="text-align:center;"><a href="cart.php?action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction"><img src="icon-delete.png" alt="Remove Item" /></a></td>
+				<td style="text-align:center;"><a href="cart.php?action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction"><span class="ti-close"></span></a></td>
 				</tr>
 				<?php
 				$total_quantity += $item["quantity"];
@@ -122,6 +157,10 @@ if(isset($_SESSION["cart_item"])){
 <?php 
 }
 ?>
+<div style="float:right;padding-top:30px;">
+<a href="index.php" class="checkoutBtn" style="padding-right: 10px;"><span class="ti-back-left"></span> Back to Configurator </a>
+<a href="checkout.php" class="checkoutBtn"><span class="ti-direction"></span> Check out</a>
+</div>
 </div>
 
 <div id="product-grid">
