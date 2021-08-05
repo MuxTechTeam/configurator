@@ -3,7 +3,8 @@
 session_start();
 require_once 'Functions/DB_Functions.php';
 $db = new DB_Functions();
-
+require_once("functions/dbcontroller.php");
+$db_handle = new DBController();
 
 $allproducts = $db->getproducts();
 $allproductss = $db->getproducts();
@@ -58,8 +59,8 @@ $allproductss = $db->getproducts();
 		  <div class="sk-circle11 sk-child"></div>
 		  <div class="sk-circle12 sk-child"></div>
 		</div>
-		<!--end spinner loader-->
-		<div id="catalog" class="container-fluid animate-bottom">
+		<!--end spinner loader  -->
+		<div id="catalog" class="container-fluid animate-bottom"  > 
 			<div class="row">
 				<div class="box-view"></div>
 						<?php
@@ -147,7 +148,9 @@ $allproductss = $db->getproducts();
 							<ul class="list-group row">
 							<?php	
 							$cccproductparts =$db->getproductparts($currentproductid);
-							while($mprow = mysqli_fetch_array($cccproductparts)){ ?>
+							
+							while($mprow = mysqli_fetch_array($cccproductparts)){ //print_r($mprow); exit; ?>
+
 								<li id="<?php echo $mprow['PartId'];?>" onclick="openpartmaterial(this.id)" class="list-group-item col-xs-12">
 									<span class="chat-img pull-left">
 										<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $mprow['partpic']; ?>">
@@ -188,7 +191,8 @@ $allproductss = $db->getproducts();
 								<span>Summary</span>
 							</div>
 							<ul class="list-group row">
-										<?php	
+										<?php
+										// echo $currentproductid; exit;
 							$cccdproductparts =$db->getproductparts($currentproductid);
 							while($mmprow = mysqli_fetch_array($cccdproductparts)){ ?>
 								<li id="<?php echo $mmprow['PartId'];?>" onclick="openpartcolors(this.id)" class="list-group-item col-xs-12">
@@ -293,7 +297,30 @@ $allproductss = $db->getproducts();
 				</div>
 				<!--end right column-->
 			</div>
+		<div id="product-grid">
+			<div class="txt-heading">Popular Selected Products</div>
+			<?php
+			$product_array = $db_handle->runQuery("SELECT * FROM orders ORDER BY orderid ASC limit 3");
+			if (!empty($product_array)) { 
+				foreach($product_array as $key=>$value){
+			?>
+				<div class="product-item">
+					<form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["orderid"]; ?>">
+					<div class="product-image"><img class="img-responsive" src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
+					<div class="product-tile-footer">
+					<div class="product-title"><?php echo $product_array[$key]["ProductName"]; ?></div>
+					<div class="product-price"><?php echo "$".$product_array[$key]["Price"]; ?></div>
+					<div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
+					</div>
+					</form>
+				</div>
+			<?php
+				}
+			}
+			?>
 		</div>
+		</div>
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="js/summary.js"></script>
@@ -315,10 +342,10 @@ function openpartmaterial(id){
                     },
                     success: function (response) {
                    	console.log(response);
-                    $( '#materials' ).html(response);
+                    $( '#materials' ).html(response);  // jquery...
                     }
                 });
-         document.getElementById("mySidenav").style.width = "0%";
+         	document.getElementById("mySidenav").style.width = "0%";
 	     document.getElementById("mySidenav-2").style.width = "100%";
 
             }

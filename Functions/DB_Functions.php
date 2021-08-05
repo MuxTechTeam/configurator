@@ -108,8 +108,9 @@ public function getmetrialvariation($Partid) {
             }
 }
 public function getcolorvariation($Partid) {
-    
-       $result = $this->db_con->query("SELECT * FROM `varation` WHERE VariationName = 'Color' AND PartId = '$Partid'");
+        $q = "SELECT * FROM `varation` WHERE VariationName = 'Color' AND PartId = '$Partid'";
+        // echo $q; exit;
+       $result = $this->db_con->query($q);
 
          if ($result) {
              
