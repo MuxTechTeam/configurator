@@ -312,6 +312,8 @@ $productvariations = $db->getvariationbyproduct($pidd);
   <select name="variationname">
     <option value="Material">Material</option>
     <option value="Color">Color</option>
+    <option value="BackView">Back View</option>
+    <option value="SideView">Side View</option>
   </select>
 
 </div>

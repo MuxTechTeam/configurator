@@ -62,6 +62,38 @@ $allproductss = $db->getproducts();
 		<!--end spinner loader  -->
 		<div id="catalog" class="container-fluid animate-bottom"  > 
 			<div class="row">
+				<nav class="navbar navbar-fixed-left navbar-minimal animate">
+					<div class="navbar-toggler animate">
+						<span class="menu-icon ti-plus"></span>
+					</div>
+					<ul class="navbar-menu animate">
+						<li>
+							<a id="zoomIn" class="animate">
+								<span class="ti-plus"></span>
+							</a>
+						</li>
+						<li>
+							<a id="zoomOut" class="animate">
+								<span class="ti-minus"></span>
+							</a>
+						</li>
+						<li>
+							<a data-toggle="tooltip" data-placement="right" title="" class="animate activefront" data-original-title="front view">
+								<span class="ti-angle-up"></span>
+							</a>
+						</li>
+						<li>
+							<a data-toggle="tooltip" data-placement="right" title="" class="animate activeside" data-original-title="side view">
+								<span class="ti-angle-right"></span>
+							</a>
+						</li>
+						<li>
+							<a data-toggle="tooltip" data-placement="right" title="" class="animate activetop" data-original-title="back view">
+								<span class="ti-angle-down"></span>
+							</a>
+						</li>
+					</ul>
+				</nav>
 				<div class="box-view"></div>
 						<?php
                    if (isset($_POST['choose'])) {
@@ -100,7 +132,46 @@ $allproductss = $db->getproducts();
 
              ?>		
 				</div>
-				
+				<!-- side view -->
+				<?php
+ 				$img =''	;
+                    $sideViewImgs = $db->getSideView($currentproductid);
+                    $vc = mysqli_num_rows($sideViewImgs);
+                    $row23 = mysqli_fetch_array($sideViewImgs);
+		         if ($vc < 2) {
+		         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$row23['VariationPic'].'" alt="" class="img-responsive"/>';
+		         }else{
+		         	  while($fates = mysqli_fetch_array($sideViewImgs)){
+                         //$mresult = $db->getmetrialvariation($prow['PartId']);
+                       
+					$img .= '<img id="'.$fates['PartName'].'" src="AdminDashboard/uploads/'.$fates['VariationPic'].'" alt="" class="img-responsive"/>';
+					
+              		 }
+		         }
+				?>
+				<div id="desk-sx-side" class="side-view col-sm-12 col-md-8 tail" style="display: none;">
+					<?=$img;?>
+				</div>
+				<!-- back view -->
+				<?php
+ 				$img =''	;
+                    $backViewImgs = $db->getBackView($currentproductid);
+                    $vc1 = mysqli_num_rows($backViewImgs);
+                     $rowss = mysqli_fetch_array($backViewImgs);
+		         if ($vc1 < 2) {
+		         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$rowss['VariationPic'].'" alt="" class="img-responsive"/>';
+		         }else{
+		         	  while($prow23 = mysqli_fetch_array($backViewImgs)){
+                         //$mresult = $db->getmetrialvariation($prow['PartId']);
+                       
+					$img .= '<img id="'.$prow23['PartName'].'" src="AdminDashboard/uploads/'.$prow23['VariationPic'].'" alt="" class="img-responsive"/>';
+					
+              		 }
+		         }
+				?>
+				<div id="desk-sx-back" class="back-view col-sm-12 col-md-8 tail" style="display: none;">
+					<?=$img;?>
+				</div>
 				<div id="desk-dx" class="col-sm-12 col-md-4">
 					<div id="desk-dx-top" class="col-sm-12 catalog">
 						<div id="mySidenav-13" class="sidenav-13">

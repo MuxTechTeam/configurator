@@ -22,13 +22,33 @@ else {
    <script> window.location.href ='login.php';</script>
 ";
 }
-
-
+ 
 require_once '../Functions/DB_Functions.php';
 $db = new DB_Functions();
 $products = $db->getproducts();
 
+if (isset($_POST['deleteproduct'])) {
+
+
+
+  $productID = $_POST['productID'];
+
+  $result = $db->deleteProduct($productID);
+  if ($result){
+    echo "<script> window.alert('Product Deleted Successfully');
+    window.location.href ='products.php';
+    </script>";
+ }
+  else{
+   echo "<script> window.alert('Something went Wrong Please Try Again');
+   window.location.href ='products.php';
+   </script>";
+ }
+
+}
+
 ?>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -109,12 +129,20 @@ $products = $db->getproducts();
                                     <td><b><?php echo $or['ProductName']; ?></b></td>
                                     <td><b><?php  echo $or['Dprice']; ?></b></td>
                                     <td><b><?php ?> <img src="uploads/<?php echo $or['Dpic'];?>" width="50px" hieght="50px"> </b></td>
-                                    <td><b>
+                                    <td>
+                                      <b>
                                       <form action="edit-product.php" method="post">
                                         <input type="hidden" name="productid" value="<?php echo $or['Id']; ?>">
                                       <button name="submit">Edit Product</button>
                                       </form>
-                                    </b></td>
+                                    </b>
+                                    <b> 
+                                        <form action="" method="post">
+                                          <input type="hidden" name="productID" value="<?php echo $or['Id']; ?>">
+                                          <button name="deleteproduct">Delete Product</button>
+                                        </form> 
+                                    </b>
+                                  </td>
                                 </tr>
                              <?php    } ?>
                   

@@ -188,7 +188,7 @@ public function insertvariation($PartId, $Productid, $VariationName, $VariationV
             return $result2;
              }
             }
-}
+        }
 
 public function deletevariation($variationid) {
     
@@ -203,9 +203,41 @@ public function deletevariation($variationid) {
 }
  
          
+    public function deleteProduct($proID) {
     
+       $result = $this->db_con->query("Delete FROM `products` Where Id ='$proID'");
 
+          if ($result) {
+             
+            $result2 = $this->db_con->query("Delete FROM `varation` Where ProductId='$proID'");
+            $result3 = $this->db_con->query("Delete FROM `products_parts` Where ProductId='$proID'");
 
+            if ($result2) {
+            
+            return $result2;
+             }
+            }
+        }
+
+        
+        public function getSideView($productid) {
+        $result = $this->db_con->query("SELECT vr.* ,pr.PartName FROM `varation` vr left join products_parts pr on pr.PartId = vr.PartId  WHERE vr.ProductId = '$productid' and vr.VariationName ='SideView'");
+
+          if ($result) {
+
+            return $result;
+            
+            }
+        }
+         public function getBackView($productid) {
+        $result = $this->db_con->query("SELECT vr.* ,pr.PartName FROM `varation` vr left join products_parts pr on pr.PartId = vr.PartId  WHERE vr.ProductId = '$productid' and vr.VariationName ='BackView'");
+
+          if ($result) {
+
+            return $result;
+            
+            }
+        }
 
 
 }
