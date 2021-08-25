@@ -410,12 +410,20 @@ if (isset($_FILES["file"]["name"])) {
     $tmp_name = $_FILES['file']['tmp_name'];
     $error = $_FILES['file']['error'];
     $ext = pathinfo($name, PATHINFO_EXTENSION);
-
+    $file_size = $_FILES['file']['size'];
+    
     if (!empty($name)) {
       $location = 'uploads/';
 
       if  (move_uploaded_file($tmp_name, $location.$filename.'.'.$ext)){
-        $filename = $filename.'.'.$ext;
+        
+        $filename = $filename.'.'.$ext;     
+$expensions= array("jpeg","jpg","png"); 
+      if(in_array($ext,$expensions)=== false or $file_size > 5097152){
+          echo "<script> window.alert('Only PNG or JPG expensions are allowed with size less then 5MB'); 
+                </script>";
+        } exit;
+        
   $result = $db->addproductpart($pidd , $partname, $filename );
   if ($result){
     echo "<script> window.alert('PArt Added Successfully');

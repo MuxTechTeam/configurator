@@ -2,7 +2,7 @@
 
 
 /**
- * Tehrim
+ * Marius
  */
 
  class DB_Connect {
@@ -11,7 +11,9 @@
     public function connect() {
        // require_once 'Config.php';
         
-$this->conn = new mysqli("localhost", "root", "","product");        
+        
+$this->conn = new mysqli("localhost", "root", "","usmajngk_product");        
+
         return $this->conn;
     }
 }

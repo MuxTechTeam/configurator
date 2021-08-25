@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("functions/dbcontroller.php");
+require_once("Functions/dbcontroller.php");
 $db_handle = new DBController();
  
 if(!empty($_GET["action"]) or !empty($_POST["totalPrice"])) {

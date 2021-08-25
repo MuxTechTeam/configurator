@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("functions/dbcontroller.php");
+require_once("Functions/dbcontroller.php");
 $db_handle = new DBController();
 ?>
 <!DOCTYPE html>
@@ -141,13 +141,13 @@ span.price {
         if(!empty($item["name"])){
         $inserQuery = "INSERT INTO 
                 `orders`( 
-                `ProductName`, `Username`,   `Contact`, `Location`, `Picture` , `Price`
+                `ProductName`, `Username`,   `Contact`, `Location`, `Picture` , `Price`,`productID`
                   ) 
                 VALUES 
                 (
                 '".$item["name"]."', '".$_POST["name"]."' , 
                 '".$_POST["phone"]."', '".$_POST["address"]."' , 
-                '".$item["image"]."' , '".$item["price"]."'
+                '".$item["image"]."' , '".$item["price"]."', '".$item["code"]."'
                 )";
         $response = $db_handle->inserQuery($inserQuery);
         }

@@ -3,11 +3,12 @@ class DBController {
 	private $host = "localhost";
 	private $user = "root";
 	private $password = "";
-	private $database = "product";
+	private $database = "usmajngk_product";
 	private $conn;
 	
 	function __construct() {
 		$this->conn = $this->connectDB();
+		//print_r($this->conn);exit;
 	}
 	
 	function connectDB() {

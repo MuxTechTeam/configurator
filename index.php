@@ -3,22 +3,31 @@
 session_start();
 require_once 'Functions/DB_Functions.php';
 $db = new DB_Functions();
-require_once("functions/dbcontroller.php");
+require_once("Functions/dbcontroller.php");
 $db_handle = new DBController();
 
 $allproducts = $db->getproducts();
 $allproductss = $db->getproducts();
 
-
-
-
+ 	if (isset($_POST['choose'])) {
+    	$currentproductid = $_POST['prId'];
+    	$product = $db->getproductbyId($currentproductid);
+    	$row = mysqli_fetch_array($product);
+    }
+    else
+    {
+     $row = mysqli_fetch_array($allproducts);
+     $currentproductid = $row['Id']; 
+     }
+     $cproductparts = $db->getproductparts($currentproductid);
+     $partcount = mysqli_num_rows($cproductparts);
 //$productvariations = $db->getvariationbyproduct($pidd);
 ?>
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>Product Configurator</title>
+		<title>Marius</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -35,7 +44,7 @@ $allproductss = $db->getproducts();
 		<nav class="navbar navbar-inverse">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#">Product Configurator </a>
+		      <a class="navbar-brand" >Marius Product Configurator </a>
 		    </div>
 		    <ul class="nav navbar-nav">
 		     <li class="active"><a href="index.php">Home</a></li>
@@ -59,9 +68,37 @@ $allproductss = $db->getproducts();
 		  <div class="sk-circle11 sk-child"></div>
 		  <div class="sk-circle12 sk-child"></div>
 		</div>
-		<!--end spinner loader  -->
+		<!--end spinner loader  --> 
 		<div id="catalog" class="container-fluid animate-bottom"  > 
 			<div class="row">
+				<div class="col-sm-12">
+					<div id="product-grid">
+						<div class="txt-heading">Past User Experience</div>
+						<?php
+						 
+						$product_array = $db_handle->runQuery("SELECT * FROM orders join products pr on orders.productID = pr.Id
+			Where pr.Id = ".$currentproductid."
+			 ORDER BY orderid DESC limit 3");
+						if (!empty($product_array)) { 
+							foreach($product_array as $key=>$value){
+						?>
+							<div class="product-item">
+								<form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["orderid"]; ?>">
+								<div class="product-image"><img class="img-responsive" src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
+								<div class="product-tile-footer">
+								<div class="product-title"><?php echo $product_array[$key]["ProductName"]; ?></div>
+								<div class="product-price"><?php echo "$".$product_array[$key]["Price"]; ?></div>
+								<div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
+								</div>
+								</form>
+							</div>
+						<?php
+							}
+						}
+						?>
+					</div> 
+				</div>
+				<div class="col-sm-12"> 
 				<nav class="navbar navbar-fixed-left navbar-minimal animate">
 					<div class="navbar-toggler animate">
 						<span class="menu-icon ti-plus"></span>
@@ -94,20 +131,10 @@ $allproductss = $db->getproducts();
 						</li>
 					</ul>
 				</nav>
-				<div class="box-view"></div>
-						<?php
-                   if (isset($_POST['choose'])) {
-                   	$currentproductid = $_POST['prId'];
-                   	$product = $db->getproductbyId($currentproductid);
-                   	$row = mysqli_fetch_array($product);
-                   }
-                   else
-                   {
-		          $row = mysqli_fetch_array($allproducts);
-		          $currentproductid = $row['Id']; 
-                    }
-                    $cproductparts = $db->getproductparts($currentproductid);
-                    $partcount = mysqli_num_rows($cproductparts);
+			
+				<div class="box-view">
+			<?php
+                   
 		         if ($partcount < 2) {
 		         	 ?>
                 
@@ -124,7 +151,7 @@ $allproductss = $db->getproducts();
                          $mresult = $db->getmetrialvariation($prow['PartId']);
                          
                          
-					  ?>x
+					  ?>
 					<img id="<?php echo $prow['PartName']; ?>" src="AdminDashboard/uploads/<?php echo $prow['partpic']; ?>" alt="" class="img-responsive"/>
 					
              <?php }
@@ -138,7 +165,7 @@ $allproductss = $db->getproducts();
                     $sideViewImgs = $db->getSideView($currentproductid);
                     $vc = mysqli_num_rows($sideViewImgs);
                     $row23 = mysqli_fetch_array($sideViewImgs);
-		         if ($vc < 2) {
+		         if ($vc < 2 and !empty($row23)) {
 		         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$row23['VariationPic'].'" alt="" class="img-responsive"/>';
 		         }else{
 		         	  while($fates = mysqli_fetch_array($sideViewImgs)){
@@ -158,7 +185,7 @@ $allproductss = $db->getproducts();
                     $backViewImgs = $db->getBackView($currentproductid);
                     $vc1 = mysqli_num_rows($backViewImgs);
                      $rowss = mysqli_fetch_array($backViewImgs);
-		         if ($vc1 < 2) {
+		         if ($vc1 < 2 and !empty($rowss)) {
 		         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$rowss['VariationPic'].'" alt="" class="img-responsive"/>';
 		         }else{
 		         	  while($prow23 = mysqli_fetch_array($backViewImgs)){
@@ -202,7 +229,8 @@ $allproductss = $db->getproducts();
 						</div>
 						<div id="mySidenav" class="sidenav">
 							<div class="top-logo col-xs-12">
-								<h4>Product Configurator </h4>
+								<img src="icons/favicon.png" width="50%">
+							
 							</div>
 							<div class="top-nav col-xs-6">
 								<span><?php echo $row['ProductName']; ?></span>
@@ -367,31 +395,11 @@ $allproductss = $db->getproducts();
 					</div>					
 				</div>
 				<!--end right column-->
-			</div>
-		<div id="product-grid">
-			<div class="txt-heading">Popular Selected Products</div>
-			<?php
-			$product_array = $db_handle->runQuery("SELECT * FROM orders ORDER BY orderid ASC limit 3");
-			if (!empty($product_array)) { 
-				foreach($product_array as $key=>$value){
-			?>
-				<div class="product-item">
-					<form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["orderid"]; ?>">
-					<div class="product-image"><img class="img-responsive" src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
-					<div class="product-tile-footer">
-					<div class="product-title"><?php echo $product_array[$key]["ProductName"]; ?></div>
-					<div class="product-price"><?php echo "$".$product_array[$key]["Price"]; ?></div>
-					<div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
-					</div>
-					</form>
-				</div>
-			<?php
-				}
-			}
-			?>
+				
+			</div>  
 		</div>
-		</div>
-
+	</div>
+</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="js/summary.js"></script>

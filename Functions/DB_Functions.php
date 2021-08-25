@@ -54,8 +54,8 @@ public function getproductpartsbyid($id) {
 
 
 
-public function InsertProduct($Productname , $Dpic , $Dprice ){
-$result = $this->db_con->query("INSERT INTO `products`( `ProductName`, `Dpic`, `Dprice`) VALUES ('$Productname','$Dpic','$Dprice')");
+public function InsertProduct($Productname , $Dpic , $Dprice , $categories){
+$result = $this->db_con->query("INSERT INTO `products`( `ProductName`, `Dpic`, `Dprice`,`category`) VALUES ('$Productname','$Dpic','$Dprice','$categories')");
 
           if ($result) {
 

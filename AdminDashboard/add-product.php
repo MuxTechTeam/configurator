@@ -148,7 +148,13 @@ $orders = $db->getorderlist();
                   </div>
                   
               </div>
-         
+         <label for="products">Choose a Product:</label>
+
+<select name="categories" id="products">
+  <option value="chair">Chair</option>
+  <option value="sneaker">Sneakers</option>
+  <option value="shoes">Shoes</option>
+</select>
               <div class="col-12">
                 <button type="submit" name="submit" class="btn btn-primary btn-block text-uppercase">Add Product Now</button>
               </div>
@@ -197,6 +203,7 @@ if (isset($_FILES["file"]["name"])) {
     $tmp_name = $_FILES['file']['tmp_name'];
     $error = $_FILES['file']['error'];
     $ext = pathinfo($name, PATHINFO_EXTENSION);
+ $file_size = $_FILES['file']['size'];
 
     if (!empty($name)) {
         $location = 'uploads/';
@@ -205,8 +212,16 @@ if (isset($_FILES["file"]["name"])) {
             $productname = $_POST['name'];
 $defaultprice = $_POST['price'];
        $ft = $filename.'.'.$ext;     
-    $result = $db->InsertProduct($productname , $ft , $defaultprice );
+$expensions= array("jpeg","jpg","png"); 
+      if(in_array($ext,$expensions)=== false or $file_size > 5097152){
+          echo "<script> window.alert('Only PNG or JPG expensions are allowed with size less then 5MB'); 
+                </script>";
+         exit; 
+      }   
+$productcat = $_POST['categories'];
+    $result = $db->InsertProduct($productname , $ft , $defaultprice ,$productcat);
     if ($result){
+        
       echo "<script> window.alert('product added succesfully');
                    window.location.href = 'products.php'
        </script>";
