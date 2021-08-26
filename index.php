@@ -70,34 +70,7 @@ $allproductss = $db->getproducts();
 		</div>
 		<!--end spinner loader  --> 
 		<div id="catalog" class="container-fluid animate-bottom"  > 
-			<div class="row">
-				<div class="col-sm-12">
-					<div id="product-grid">
-						<div class="txt-heading">Past User Experience</div>
-						<?php
-						 
-						$product_array = $db_handle->runQuery("SELECT * FROM orders join products pr on orders.productID = pr.Id
-			Where pr.Id = ".$currentproductid."
-			 ORDER BY orderid DESC limit 3");
-						if (!empty($product_array)) { 
-							foreach($product_array as $key=>$value){
-						?>
-							<div class="product-item">
-								<form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["orderid"]; ?>">
-								<div class="product-image"><img class="img-responsive" src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
-								<div class="product-tile-footer">
-								<div class="product-title"><?php echo $product_array[$key]["ProductName"]; ?></div>
-								<div class="product-price"><?php echo "$".$product_array[$key]["Price"]; ?></div>
-								<div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
-								</div>
-								</form>
-							</div>
-						<?php
-							}
-						}
-						?>
-					</div> 
-				</div>
+			<div class="row"> 
 				<div class="col-sm-12"> 
 				<nav class="navbar navbar-fixed-left navbar-minimal animate">
 					<div class="navbar-toggler animate">
@@ -131,272 +104,309 @@ $allproductss = $db->getproducts();
 						</li>
 					</ul>
 				</nav>
-			
-				<div class="box-view">
-			<?php
-                   
-		         if ($partcount < 2) {
-		         	 ?>
-                
-		          <div id="desk-sx" class="front-view col-sm-12 col-md-8 tail">
-					<img id="<?php echo $currentproductid; ?>" src="AdminDashboard/uploads/<?php echo $row['Dpic']; ?>" alt="" class="img-responsive"/>
-					
-				</div>
-			<?php }
-			else {
-			?>
-				
-				<div id="desk-sx" class="front-view col-sm-12 col-md-8 tail">
-					 <?php while($prow = mysqli_fetch_array($cproductparts)){
-                         $mresult = $db->getmetrialvariation($prow['PartId']);
-                         
-                         
-					  ?>
-					<img id="<?php echo $prow['PartName']; ?>" src="AdminDashboard/uploads/<?php echo $prow['partpic']; ?>" alt="" class="img-responsive"/>
-					
-             <?php }
-             }
-
-             ?>		
-				</div>
-				<!-- side view -->
-				<?php
- 				$img =''	;
-                    $sideViewImgs = $db->getSideView($currentproductid);
-                    $vc = mysqli_num_rows($sideViewImgs);
-                    $row23 = mysqli_fetch_array($sideViewImgs);
-		         if ($vc < 2 and !empty($row23)) {
-		         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$row23['VariationPic'].'" alt="" class="img-responsive"/>';
-		         }else{
-		         	  while($fates = mysqli_fetch_array($sideViewImgs)){
-                         //$mresult = $db->getmetrialvariation($prow['PartId']);
-                       
-					$img .= '<img id="'.$fates['PartName'].'" src="AdminDashboard/uploads/'.$fates['VariationPic'].'" alt="" class="img-responsive"/>';
-					
-              		 }
-		         }
-				?>
-				<div id="desk-sx-side" class="side-view col-sm-12 col-md-8 tail" style="display: none;">
-					<?=$img;?>
-				</div>
-				<!-- back view -->
-				<?php
- 				$img =''	;
-                    $backViewImgs = $db->getBackView($currentproductid);
-                    $vc1 = mysqli_num_rows($backViewImgs);
-                     $rowss = mysqli_fetch_array($backViewImgs);
-		         if ($vc1 < 2 and !empty($rowss)) {
-		         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$rowss['VariationPic'].'" alt="" class="img-responsive"/>';
-		         }else{
-		         	  while($prow23 = mysqli_fetch_array($backViewImgs)){
-                         //$mresult = $db->getmetrialvariation($prow['PartId']);
-                       
-					$img .= '<img id="'.$prow23['PartName'].'" src="AdminDashboard/uploads/'.$prow23['VariationPic'].'" alt="" class="img-responsive"/>';
-					
-              		 }
-		         }
-				?>
-				<div id="desk-sx-back" class="back-view col-sm-12 col-md-8 tail" style="display: none;">
-					<?=$img;?>
-				</div>
-				<div id="desk-dx" class="col-sm-12 col-md-4">
-					<div id="desk-dx-top" class="col-sm-12 catalog">
-						<div id="mySidenav-13" class="sidenav-13">
-							<div class="top-logo col-xs-12">
-								<!-- <h3>Product Configurator </h3> -->
-							</div>					
-							<div onclick="closeNav13()" class="top-nav push-active col-xs-6">
-								<span class="ti-angle-left"></span><span class="tab-space">Back</span>
-							</div>	
-							<div class="top-nav-name col-xs-12" data-toggle="collapse">
-								<span id="productnamecontainer"><?php echo $row['ProductName']; ?></span>
+		<div class="row"> 
+			<div class="box-view">
+				<div class="col-sm-8"> 
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="product-grid">
+						<div class="txt-heading">Past User Experience</div>
+						<?php 
+								$product_array = $db_handle->runQuery("SELECT * FROM orders join products pr on orders.productID = pr.Id
+					Where pr.Id = ".$currentproductid."
+					 ORDER BY orderid DESC limit 3");
+								if (!empty($product_array)) { 
+									foreach($product_array as $key=>$value){
+								?>
+									<div class="product-item">
+										<form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["orderid"]; ?>">
+										<div class="product-image"><img class="img-responsive" src="<?php echo $product_array[$key]["Picture"]; ?>"></div>
+										<div class="product-tile-footer">
+										<div class="product-title"><?php echo $product_array[$key]["ProductName"]; ?></div>
+										<div class="product-price"><?php echo "$".$product_array[$key]["Price"]; ?></div>
+										<div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
+										</div>
+										</form>
+									</div>
+								<?php
+									}
+								}
+								?>
 							</div>
-							<?php   
-							while($or = mysqli_fetch_array($allproductss)){
-								
-							 ?>
-							<div data-toggle="tooltip" title="<?php echo $or['ProductName']; ?> " class="col-xs-6 product-tail frame">
-								<form method="post" action="">
-								<img class="image-responsive" alt="abcs" src="AdminDashboard/uploads/<?php echo $or['Dpic']; ?>"/>
-                                <input type="hidden" name="prId" value="<?php echo $or['Id']; ?>">
-								<button class="btn btn-primary" name="choose">Select Item</button>
-								</form>
-							</div>
+						</div>
+						<div class="col-sm-12">
 							<?php
-						}
-							?>
-							
-						</div>
-						<div id="mySidenav" class="sidenav">
-							<div class="top-logo col-xs-12">
-								<img src="icons/favicon.png" width="50%">
-							
-							</div>
-							<div class="top-nav col-xs-6">
-								<span><?php echo $row['ProductName']; ?></span>
-							</div>
-							<div id="product" onclick="openNav13()" class="top-nav-name col-xs-6" data-toggle="collapse">
-								<span>Catalog</span>
-							</div>
-							<div class="top-nav col-xs-6">
-								<span>Configurator</span>
-							</div>
-							<div onclick="opensummary()" class="top-nav push-active col-xs-6">
-								<span>Summary</span>
-							</div>
-							<ul class="list-group row">
-							<?php	
-							$cccproductparts =$db->getproductparts($currentproductid);
-							
-							while($mprow = mysqli_fetch_array($cccproductparts)){ //print_r($mprow); exit; ?>
-
-								<li id="<?php echo $mprow['PartId'];?>" onclick="openpartmaterial(this.id)" class="list-group-item col-xs-12">
-									<span class="chat-img pull-left">
-										<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $mprow['partpic']; ?>">
-									</span>
-									<span></span>
-									<span class="tab-space"><?php echo $mprow['PartName']; ?> Material</span><span class="ti-angle-right"></span>
-								</li>		
-								<?php } ?>	
-								<li onclick="opencolors()" class="list-group-item col-xs-12">
-									<span class="chat-img pull-left">
-										<img width="50" class="img-responsive" alt="" src="icons/icon-3.svg">
-									</span>
-									<span>Colors</span>
-								<span class="tab-space"></span><span class="ti-angle-right"></span>
-								</li>
-							</ul>
-						</div>
-						<div id="mySideNav-2" class="">
-
-							<div onclick="closeNav4()" class="top-nav col-xs-6">
-								<span  class="ti-angle-left"></span><span class="tab-space"></span>
-								<span >Parts</span>
-							</div>
-							<div onclick="opensummary()" class="top-nav push-active col-xs-6">
-								<span>Summary</span>
-							</div>
-							<ul class="list-group row" id="materials">
-								
-							</ul>
-						</div>
+	                   
+			         if ($partcount < 2) {
+			         	 ?>
+	                
+			          <div id="desk-sx" class="front-view col-sm-12 col-md-8 tail">
+						<img id="<?php echo $currentproductid; ?>" src="AdminDashboard/uploads/<?php echo $row['Dpic']; ?>" alt="" class="img-responsive"/>
 						
-						<div id="mySidenav-4" class="sidenav-4">         
-							<div onclick="closeNav4()" class="top-nav push col-xs-6">
-								<span class="ti-angle-left"></span><span class="tab-space"></span>
-								<span>Colors </span>
-							</div>
-							<div onclick="opensummary()" class="top-nav push-active col-xs-6">
-								<span>Summary</span>
-							</div>
-							<ul class="list-group row">
-										<?php
-										// echo $currentproductid; exit;
-							$cccdproductparts =$db->getproductparts($currentproductid);
-							while($mmprow = mysqli_fetch_array($cccdproductparts)){ ?>
-								<li id="<?php echo $mmprow['PartId'];?>" onclick="openpartcolors(this.id)" class="list-group-item col-xs-12">
-									<span class="chat-img pull-left">
-										<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $mmprow['partpic']; ?>">
-									</span>
-									<span></span>
-									<span class="tab-space"><?php echo $mmprow['PartName']; ?> Colors</span><span class="ti-angle-right"></span>
-								</li>		
-								<?php } ?>			
-							</ul>
-						</div>
-						<div id="mySidenav-5" class="sidenav-5">
-							<div onclick="closeNav5()" class="top-nav push col-xs-6">
-								<span class="ti-angle-left"></span><span class="tab-space"></span>
-								<span>colors</span>
-							</div>
-							<div onclick="opensummary()" class="top-nav push-active col-xs-6">
-								<span>Summary</span>
-							</div>
-							<ul class="list-group row" id="colorvar">
-								
-							</ul>
-						</div>
+					</div>
+				<?php }
+				else {
+				?>
+					
+					<div id="desk-sx" class="front-view col-sm-12 col-md-8 tail">
+						 <?php while($prow = mysqli_fetch_array($cproductparts)){
+	                         $mresult = $db->getmetrialvariation($prow['PartId']);
+	                         
+	                         
+						  ?>
+						<img id="<?php echo $prow['PartName']; ?>" src="AdminDashboard/uploads/<?php echo $prow['partpic']; ?>" alt="" class="img-responsive"/>
 						
-						
-						
-						<div id="mySidenav-7" class="sidenav-7">
-							<div onclick="closeNav7()" class="top-nav push-active col-xs-6">
-								<span class="ti-angle-left"></span><span class="tab-space"></span>
-								<span>Back</span>
-							</div>
-							<div class="top-nav col-xs-6">
-								<span>Summary</span>
-							</div>
-							<br>
-							<br>
-							<h4> Price with Variation </h4>
-							<form method="post" id="cart_form" action="cart.php?action=addDirect&code=1" enctype="multipart/form-data">
-							<ul class="list-group row" id="test">
-								
-							<?php 
-							$csdproductparts = $db->getproductparts($currentproductid);
-							$partIDs = array();
-							while($porow = mysqli_fetch_array($csdproductparts)){
-								array_push($partIDs, $porow['PartId']);
-							?>
-							     
-								<li onclick="" class="list-group-summary col-xs-8" >
-									<span class="chat-img pull-left">
-										<span class="tab-space"></span>
-									</span>
-										<?php echo $porow['PartName']; ?><br>
-										<span class="list-group-code selectedparts" data-partid="<?php echo $porow['PartId']; ?>" id="varname<?php echo $porow['PartName']; ?>">no variation</span> 
-									
-								</li>
-								<li  class="list-group-item col-xs-4 price" id="varprice<?php echo $porow['PartName']; ?>">
-									0
-								</li>
-								<?php } ?>
-								<input type="hidden" name="selectedParts" id="selectedParts" value="<?php echo implode(',',$partIDs);?>">
-								<input type="hidden" name="productNameInput" id="productNameInput">
-								<li style="line-height:35px;" class="total list-group-summary col-xs-8">
-									<span class="chat-img pull-left">
-										<span class="tab-space"></span>
-									</span>
-									Default Price:<br>
-								</li>
-								<?php $productt = $db->getproductbyId($currentproductid);
-								$klrow = mysqli_fetch_array($productt); ?>
-								<input type="hidden" name="productID" value="<?php echo $currentproductid ?>">
-								<li id="dppp" class="list-group-item col-xs-4 price">
-									<?php echo $klrow['Dprice']; ?> 
-								</li>
-                                <li style="line-height:35px;" class="total list-group-summary col-xs-8">
-									<span class="chat-img pull-left">
-										<span class="tab-space"></span>
-									</span>
-									Total Price:<br>
-								</li>
-								<li id="totalprice" class=" list-group-item col-xs-4">
-								</li>
-								<input type="hidden" name="totalPrice">
-							</ul>
+	             <?php }
+	             }
 
-							<div class="top-nav col-xs-6 push-active">
-								<span class="ti-sharethis"></span><span class="tab-space"></span>
-								<span id="someButton">Order</span>
-							</div>
-							<input type="hidden" name="base64image" form="cart_form" id="base64image">
-							<div class="top-nav col-xs-6 push-active"> 
-								<span class="ti-location-arrow"></span><span class="tab-space"></span>
-								<a href="javascript:{}" onclick="document.getElementById('cart_form').submit();">add to cart</a>
-								 
-							</div>
-							<div id="creadImageContainer" style="display: none;">
-
-							</div>
-							 	</form>
+	             ?>		
+					</div>
+					<!-- side view -->
+					<?php
+	 				$img =''	;
+	                    $sideViewImgs = $db->getSideView($currentproductid);
+	                    $vc = mysqli_num_rows($sideViewImgs);
+	                    $row23 = mysqli_fetch_array($sideViewImgs);
+			         if ($vc < 2 and !empty($row23)) {
+			         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$row23['VariationPic'].'" alt="" class="img-responsive"/>';
+			         }else{
+			         	  while($fates = mysqli_fetch_array($sideViewImgs)){
+	                         //$mresult = $db->getmetrialvariation($prow['PartId']);
+	                       
+						$img .= '<img id="'.$fates['PartName'].'" src="AdminDashboard/uploads/'.$fates['VariationPic'].'" alt="" class="img-responsive"/>';
+						
+	              		 }
+			         }
+					?>
+					<div id="desk-sx-side" class="side-view col-sm-12 col-md-8 tail" style="display: none;">
+						<?=$img;?>
+					</div>
+					<!-- back view -->
+					<?php
+	 				$img =''	;
+	                    $backViewImgs = $db->getBackView($currentproductid);
+	                    $vc1 = mysqli_num_rows($backViewImgs);
+	                     $rowss = mysqli_fetch_array($backViewImgs);
+			         if ($vc1 < 2 and !empty($rowss)) {
+			         	$img = '<img id="'.$currentproductid.'" src="AdminDashboard/uploads/'.$rowss['VariationPic'].'" alt="" class="img-responsive"/>';
+			         }else{
+			         	  while($prow23 = mysqli_fetch_array($backViewImgs)){
+	                         //$mresult = $db->getmetrialvariation($prow['PartId']);
+	                       
+						$img .= '<img id="'.$prow23['PartName'].'" src="AdminDashboard/uploads/'.$prow23['VariationPic'].'" alt="" class="img-responsive"/>';
+						
+	              		 }
+			         }
+					?>
+					<div id="desk-sx-back" class="back-view col-sm-12 col-md-8 tail" style="display: none;">
+						<?=$img;?>
+					</div>
 						</div>
-					</div>					
+					</div> 
 				</div>
-				<!--end right column-->
+				<div class="col-sm-4">
+					<div id="desk-dx" class="col-sm-12 col-md-12">
+						<div id="desk-dx-top" class="col-sm-12 catalog">
+							<div id="mySidenav-13" class="sidenav-13">
+								<div class="top-logo col-xs-12">
+									<!-- <h3>Product Configurator </h3> -->
+								</div>					
+								<div onclick="closeNav13()" class="top-nav push-active col-xs-6">
+									<span class="ti-angle-left"></span><span class="tab-space">Back</span>
+								</div>	
+								<div class="top-nav-name col-xs-12" data-toggle="collapse">
+									<span id="productnamecontainer"><?php echo $row['ProductName']; ?></span>
+								</div>
+								<?php   
+								while($or = mysqli_fetch_array($allproductss)){
+									
+								 ?>
+								<div data-toggle="tooltip" title="<?php echo $or['ProductName']; ?> " class="col-xs-6 product-tail frame">
+									<form method="post" action="">
+									<img class="image-responsive" alt="abcs" src="AdminDashboard/uploads/<?php echo $or['Dpic']; ?>"/>
+	                                <input type="hidden" name="prId" value="<?php echo $or['Id']; ?>">
+									<button class="btn btn-primary" name="choose">Select Item</button>
+									</form>
+								</div>
+								<?php
+							}
+								?>
+								
+							</div>
+							<div id="mySidenav" class="sidenav">
+								<div class="top-logo col-xs-12">
+									<img src="icons/favicon.png" width="50%">
+								
+								</div>
+								<div class="top-nav col-xs-6">
+									<span><?php echo $row['ProductName']; ?></span>
+								</div>
+								<div id="product" onclick="openNav13()" class="top-nav-name col-xs-6" data-toggle="collapse">
+									<span>Catalog</span>
+								</div>
+								<div class="top-nav col-xs-6">
+									<span>Configurator</span>
+								</div>
+								<div onclick="opensummary()" class="top-nav push-active col-xs-6">
+									<span>Summary</span>
+								</div>
+								<ul class="list-group row">
+								<?php	
+								$cccproductparts =$db->getproductparts($currentproductid);
+								
+								while($mprow = mysqli_fetch_array($cccproductparts)){ //print_r($mprow); exit; ?>
+
+									<li id="<?php echo $mprow['PartId'];?>" onclick="openpartmaterial(this.id)" class="list-group-item col-xs-12">
+										<span class="chat-img pull-left">
+											<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $mprow['partpic']; ?>">
+										</span>
+										<span></span>
+										<span class="tab-space"><?php echo $mprow['PartName']; ?> Material</span><span class="ti-angle-right"></span>
+									</li>		
+									<?php } ?>	
+									<li onclick="opencolors()" class="list-group-item col-xs-12">
+										<span class="chat-img pull-left">
+											<img width="50" class="img-responsive" alt="" src="icons/icon-3.svg">
+										</span>
+										<span>Colors</span>
+									<span class="tab-space"></span><span class="ti-angle-right"></span>
+									</li>
+								</ul>
+							</div>
+							<div id="mySideNav-2" class="">
+
+								<div onclick="closeNav4()" class="top-nav col-xs-6">
+									<span  class="ti-angle-left"></span><span class="tab-space"></span>
+									<span >Parts</span>
+								</div>
+								<div onclick="opensummary()" class="top-nav push-active col-xs-6">
+									<span>Summary</span>
+								</div>
+								<ul class="list-group row" id="materials">
+									
+								</ul>
+							</div>
+							
+							<div id="mySidenav-4" class="sidenav-4">         
+								<div onclick="closeNav4()" class="top-nav push col-xs-6">
+									<span class="ti-angle-left"></span><span class="tab-space"></span>
+									<span>Colors </span>
+								</div>
+								<div onclick="opensummary()" class="top-nav push-active col-xs-6">
+									<span>Summary</span>
+								</div>
+								<ul class="list-group row">
+											<?php
+											// echo $currentproductid; exit;
+								$cccdproductparts =$db->getproductparts($currentproductid);
+								while($mmprow = mysqli_fetch_array($cccdproductparts)){ ?>
+									<li id="<?php echo $mmprow['PartId'];?>" onclick="openpartcolors(this.id)" class="list-group-item col-xs-12">
+										<span class="chat-img pull-left">
+											<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $mmprow['partpic']; ?>">
+										</span>
+										<span></span>
+										<span class="tab-space"><?php echo $mmprow['PartName']; ?> Colors</span><span class="ti-angle-right"></span>
+									</li>		
+									<?php } ?>			
+								</ul>
+							</div>
+							<div id="mySidenav-5" class="sidenav-5">
+								<div onclick="closeNav5()" class="top-nav push col-xs-6">
+									<span class="ti-angle-left"></span><span class="tab-space"></span>
+									<span>colors</span>
+								</div>
+								<div onclick="opensummary()" class="top-nav push-active col-xs-6">
+									<span>Summary</span>
+								</div>
+								<ul class="list-group row" id="colorvar">
+									
+								</ul>
+							</div>
+							
+							
+							
+							<div id="mySidenav-7" class="sidenav-7">
+								<div onclick="closeNav7()" class="top-nav push-active col-xs-6">
+									<span class="ti-angle-left"></span><span class="tab-space"></span>
+									<span>Back</span>
+								</div>
+								<div class="top-nav col-xs-6">
+									<span>Summary</span>
+								</div>
+								<br>
+								<br>
+								<h4> Price with Variation </h4>
+								<form method="post" id="cart_form" action="cart.php?action=addDirect&code=1" enctype="multipart/form-data">
+								<ul class="list-group row" id="test">
+									
+								<?php 
+								$csdproductparts = $db->getproductparts($currentproductid);
+								$partIDs = array();
+								while($porow = mysqli_fetch_array($csdproductparts)){
+									array_push($partIDs, $porow['PartId']);
+								?>
+								     
+									<li onclick="" class="list-group-summary col-xs-8" >
+										<span class="chat-img pull-left">
+											<span class="tab-space"></span>
+										</span>
+											<?php echo $porow['PartName']; ?><br>
+											<span class="list-group-code selectedparts" data-partid="<?php echo $porow['PartId']; ?>" id="varname<?php echo $porow['PartName']; ?>">no variation</span> 
+										
+									</li>
+									<li  class="list-group-item col-xs-4 price" id="varprice<?php echo $porow['PartName']; ?>">
+										0
+									</li>
+									<?php } ?>
+									<input type="hidden" name="selectedParts" id="selectedParts" value="<?php echo implode(',',$partIDs);?>">
+									<input type="hidden" name="productNameInput" id="productNameInput">
+									<li style="line-height:35px;" class="total list-group-summary col-xs-8">
+										<span class="chat-img pull-left">
+											<span class="tab-space"></span>
+										</span>
+										Default Price:<br>
+									</li>
+									<?php $productt = $db->getproductbyId($currentproductid);
+									$klrow = mysqli_fetch_array($productt); ?>
+									<input type="hidden" name="productID" value="<?php echo $currentproductid ?>">
+									<li id="dppp" class="list-group-item col-xs-4 price">
+										<?php echo $klrow['Dprice']; ?> 
+									</li>
+	                                <li style="line-height:35px;" class="total list-group-summary col-xs-8">
+										<span class="chat-img pull-left">
+											<span class="tab-space"></span>
+										</span>
+										Total Price:<br>
+									</li>
+									<li id="totalprice" class=" list-group-item col-xs-4">
+									</li>
+									<input type="hidden" name="totalPrice">
+								</ul>
+
+								<div class="top-nav col-xs-6 push-active">
+									<span class="ti-sharethis"></span><span class="tab-space"></span>
+									<span id="someButton">Order</span>
+								</div>
+								<input type="hidden" name="base64image" form="cart_form" id="base64image">
+								<div class="top-nav col-xs-6 push-active"> 
+									<span class="ti-location-arrow"></span><span class="tab-space"></span>
+									<a href="javascript:{}" onclick="document.getElementById('cart_form').submit();">add to cart</a>
+									 
+								</div>
+								<div id="creadImageContainer" style="display: none;">
+
+								</div>
+								 	</form>
+							</div>
+						</div>					
+					</div>
+				</div>
+					<!--end right column-->
+					
+				</div>  
+						
+			</div>
 				
-			</div>  
 		</div>
 	</div>
 </div>
