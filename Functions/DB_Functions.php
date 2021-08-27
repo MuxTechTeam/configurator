@@ -144,9 +144,9 @@ public function getvariationbypartid($Partid) {
 
 
 
-public function insertvariation($PartId, $Productid, $VariationName, $VariationValue , $VariationPrice , $Variationpic) {
+public function insertvariation($PartId, $Productid, $VariationName, $VariationValue , $VariationPrice , $Variationpic ,$issub) {
     
-       $result = $this->db_con->query("INSERT INTO `varation`( `PartId`, `Productid`,   `VariationName`, `VariationValue`, `VariationPrice` , VariationPic) VALUES ('$PartId', '$Productid' , '$VariationName', '$VariationValue' , '$VariationPrice' , '$Variationpic')");
+       $result = $this->db_con->query("INSERT INTO `varation`( `PartId`, `Productid`,   `VariationName`, `VariationValue`, `VariationPrice` , VariationPic , isSubVariation) VALUES ('$PartId', '$Productid' , '$VariationName', '$VariationValue' , '$VariationPrice' , '$Variationpic' ,'$issub')");
 
          if ($result) {
              

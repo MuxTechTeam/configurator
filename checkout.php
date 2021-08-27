@@ -57,7 +57,7 @@ $db_handle = new DBController();
   border: 1px solid lightgrey;
   border-radius: 3px;
 }
-input[type=text] {
+input{
   width: 100%;
   margin-bottom: 20px;
   padding: 12px;
@@ -176,13 +176,13 @@ span.price {
                   <i class="fa fa-cc-discover" style="color:orange;"></i>
                 </div>
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter Name">
+                <input type="text" id="name" name="name" placeholder="Enter Name" required>
                 <label for="email">Email Address</label>
-                <input type="text" id="email" name="email"> 
+                <input type="email" id="email" name="email" required> 
                 <label for="email">Phone Number</label>
-                <input type="text" id="phone" name="phone"> 
+                <input type="number" id="phone" name="phone" min="0" required> 
                 <label for="address"> Shipping Address</label>
-                <textarea id="address" cols="148" name="address" ></textarea>   
+                <textarea id="address" cols="130" name="address" ></textarea>   
                
               </div> 
             <input type="submit" value="Continue to checkout" class="btn">

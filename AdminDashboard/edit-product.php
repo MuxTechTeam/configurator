@@ -267,7 +267,7 @@ $productvariations = $db->getvariationbyproduct($pidd);
   <label
   for="Price"
   > Part Image</label>
-  <input type="file" class="mb-1" name="file">
+  <input type="file" class="mb-1" name="file" required>
 
 </div>
 
@@ -299,7 +299,7 @@ $productvariations = $db->getvariationbyproduct($pidd);
     <input
     id="partId"
     name="partid"
-    type="text"
+    type="number"
     class="form-control validate"
     required
     />
@@ -314,6 +314,18 @@ $productvariations = $db->getvariationbyproduct($pidd);
     <option value="Color">Color</option>
     <option value="BackView">Back View</option>
     <option value="SideView">Side View</option>
+  </select>
+
+</div>
+<div class="form-group mb-3">
+    <label
+    for="variationname"
+    >Sub Variation
+  </label>
+  <select name="furtherVariation"  required>
+    <option value="0" selected>NO</option>
+    <option value="1" >YES</option>
+     
   </select>
 
 </div>
@@ -347,7 +359,7 @@ required
   <label
   for="Price"
   > Variation Image</label>
-  <input type="file" class="mb-1" name="file">
+  <input type="file" class="mb-1" name="file" required>
 
 </div>
 
@@ -418,11 +430,13 @@ if (isset($_FILES["file"]["name"])) {
       if  (move_uploaded_file($tmp_name, $location.$filename.'.'.$ext)){
         
         $filename = $filename.'.'.$ext;     
-$expensions= array("jpeg","jpg","png"); 
+
+        $expensions= array("jpeg","jpg","png"); 
       if(in_array($ext,$expensions)=== false or $file_size > 5097152){
           echo "<script> window.alert('Only PNG or JPG expensions are allowed with size less then 5MB'); 
                 </script>";
-        } exit;
+          exit;
+      } 
         
   $result = $db->addproductpart($pidd , $partname, $filename );
   if ($result){
@@ -471,11 +485,11 @@ if (isset($_POST['submittt'])) {
       if  (move_uploaded_file($tmp_name, $location.$filename.'.'.$ext)){
         $partid = $_POST['partid'];
         $variationname = $_POST['variationname'];
-
+        $furtherVariation = $_POST['furtherVariation'];
         $variationvalue = $_POST['variationvalue'];
         $variationprice = $_POST['price'];
         $ft = $filename.'.'.$ext;
-        $result = $db->insertvariation($partid, $pidd,  $variationname, $variationvalue , $variationprice , $ft);
+        $result = $db->insertvariation($partid, $pidd,  $variationname, $variationvalue , $variationprice , $ft , $furtherVariation);
         if ($result){
           echo "<script> window.alert('Variation Added Successfully');
           window.location.href ='edit-product.php';
