@@ -47,7 +47,7 @@ while($subVArrow = mysqli_fetch_array($suvariations)){
 	 	$varname1 = "varname".$partname1;
 		$varprice1 = "varprice".$partname1;
 
-		$click = "document.getElementById('".$partname1."').src='AdminDashboard/uploads/".$subVArrow['VariationPic']."' , document.getElementById('".$varname1."').innerHTML='".$subVArrow['VariationValue']."',document.getElementById('".$varname1."').setAttribute('partid', ".$PartId1.") , document.getElementById('".$varprice1."').innerHTML='".$subVArrow['VariationPrice']."' , alert('clicked')";
+		$click = "document.getElementById('".$partname1."').src='AdminDashboard/uploads/".$subVArrow['VariationPic']."' , document.getElementById('".$varname1."').innerHTML='".$subVArrow['VariationValue']."',document.getElementById('".$varname1."').setAttribute('partid', ".$PartId1.") , document.getElementById('".$varprice1."').innerHTML='".$subVArrow['VariationPrice']."' ";
 
 		$html .='<li onclick="'.$click.'" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
