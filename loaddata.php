@@ -25,50 +25,7 @@ while ($row = mysqli_fetch_array($result)) {
 $pprow = mysqli_fetch_array($part);
 $partname = $pprow['PartName'];
 $PartId = $pprow['PartId'];
-
-$isSubPart = $row['isSubVariation'];
-$VariationId  = $row['VariationId'];
-
-$html = '<ul>';
-if($isSubPart){
-$suvariations =$db->getmetrialvariation($VariationId);
-
-while($subVArrow = mysqli_fetch_array($suvariations)){
-
-	 $ProductId1 = $row['ProductId'];
-	 $Parts1 = $db->getproductparts($ProductId);
-	 $partcount1 = mysqli_num_rows($Parts);
-	 $prow1 = mysqli_fetch_array($Parts);
-	 $part1 = $db->getproductpartsbyid($id);
-	 $pprow1 = mysqli_fetch_array($part);
-	 $partname1 = $pprow['PartName'];
-	 $PartId1 = $pprow['PartId']; 
-	 if ($partcount >= 2) {
-	 	$varname1 = "varname".$partname1;
-		$varprice1 = "varprice".$partname1;
-
-		$click = "document.getElementById('".$partname1."').src='AdminDashboard/uploads/".$subVArrow['VariationPic']."' , document.getElementById('".$varname1."').innerHTML='".$subVArrow['VariationValue']."',document.getElementById('".$varname1."').setAttribute('partid', ".$PartId1.") , document.getElementById('".$varprice1."').innerHTML='".$subVArrow['VariationPrice']."' ";
-
-		$html .='<li onclick="'.$click.'" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
-								<span class="chat-img pull-left">
-									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/'.$subVArrow['VariationPic'].'"></span>'.$subVArrow['VariationValue'].'
-									<span class="tab-space"></span>
-									 
-								</li>
-								';
-	 }else{
-	 	$html .= '<li onclick="document.getElementById("'.$ProductId1.'").src='."'".'AdminDashboard/uploads/'.$subVArrow['VariationPic']."'".'" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
-								<span class="chat-img pull-left">
-									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/'.$subVArrow['VariationPic'].'"></span>'.$subVArrow['VariationValue'].'
-									<span class="tab-space"></span> 
-								</li>
-								';
-	 }
-
-}
-
-}
-$html .= '</ul>';
+ 
 //print_r($html);exit;
 	if ($partcount >= 2) {
 		$varname = "varname".$partname;
@@ -82,7 +39,7 @@ $html .= '</ul>';
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>"></span><?php echo $row['VariationValue']; ?>
 									<span class="tab-space"></span>
-									 <?php echo $html; ?>
+									 
 								</li>
 								<script> 
 									
@@ -96,7 +53,7 @@ else{
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>"></span><?php echo $row['VariationValue']; ?>
 									<span class="tab-space"></span>
-									 <?php echo $html; ?>
+									 
 								</li>
 								<script></script>
 

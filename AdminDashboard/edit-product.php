@@ -317,18 +317,7 @@ $productvariations = $db->getvariationbyproduct($pidd);
   </select>
 
 </div>
-<div class="form-group mb-3">
-    <label
-    for="variationname"
-    >Sub Variation
-  </label>
-  <select name="furtherVariation"  required>
-    <option value="0" selected>NO</option>
-    <option value="1" >YES</option>
-     
-  </select>
-
-</div>
+ 
 <div class="form-group mb-3">
   <label
   for="variationvalue"
@@ -485,11 +474,11 @@ if (isset($_POST['submittt'])) {
       if  (move_uploaded_file($tmp_name, $location.$filename.'.'.$ext)){
         $partid = $_POST['partid'];
         $variationname = $_POST['variationname'];
-        $furtherVariation = $_POST['furtherVariation'];
+        
         $variationvalue = $_POST['variationvalue'];
         $variationprice = $_POST['price'];
         $ft = $filename.'.'.$ext;
-        $result = $db->insertvariation($partid, $pidd,  $variationname, $variationvalue , $variationprice , $ft , $furtherVariation);
+        $result = $db->insertvariation($partid, $pidd,  $variationname, $variationvalue , $variationprice , $ft);
         if ($result){
           echo "<script> window.alert('Variation Added Successfully');
           window.location.href ='edit-product.php';
