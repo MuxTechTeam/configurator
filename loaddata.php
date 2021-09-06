@@ -46,22 +46,23 @@ while($subVArrow = mysqli_fetch_array($suvariations)){
 	 if ($partcount >= 2) {
 	 	$varname1 = "varname".$partname1;
 		$varprice1 = "varprice".$partname1;
-		$html .='<li onclick="document.getElementById('.$partname1.').src="AdminDashboard/uploads/'.$subVArrow['VariationPic'].'" , document.getElementById('.$varname1.').innerHTML='.$subVArrow['VariationValue'].',document.getElementById('.$varname1.').setAttribute("partid", '.$PartId1.') , document.getElementById('.$varprice1.').innerHTML='.$subVArrow['VariationPrice'].' , updateselectedIDs()" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
+
+		$click = "document.getElementById('".$partname1."').src='AdminDashboard/uploads/".$subVArrow['VariationPic']."' , document.getElementById('".$varname1."').innerHTML='".$subVArrow['VariationValue']."',document.getElementById('".$varname1."').setAttribute('partid', ".$PartId1.") , document.getElementById('".$varprice1."').innerHTML='".$subVArrow['VariationPrice']."' , alert('clicked')";
+
+		$html .='<li onclick="'.$click.'" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/'.$subVArrow['VariationPic'].'"></span>'.$subVArrow['VariationValue'].'
 									<span class="tab-space"></span>
 									 
 								</li>
-								<script> 
-									
-								</script>';
+								';
 	 }else{
-	 	$html .= '<li onclick="document.getElementById('.$ProductId1.').src="AdminDashboard/uploads/'.$subVArrow['VariationPic'].'", updateselectedIDs()" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
+	 	$html .= '<li onclick="document.getElementById("'.$ProductId1.'").src='."'".'AdminDashboard/uploads/'.$subVArrow['VariationPic']."'".'" class="text list-group-item col-xs-12 activex select-1" id="price5-1" data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/'.$subVArrow['VariationPic'].'"></span>'.$subVArrow['VariationValue'].'
 									<span class="tab-space"></span> 
 								</li>
-								<script></script>';
+								';
 	 }
 
 }
@@ -77,7 +78,7 @@ $html .= '</ul>';
 
 	
 
-<li onclick="document.getElementById('<?php echo $partname; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>' , document.getElementById('<?php echo $varname; ?>').innerHTML='<?php echo $row['VariationValue']; ?>',document.getElementById('<?php echo $varname; ?>').setAttribute('partid', '<?php echo $PartId; ?>') , document.getElementById('<?php echo $varprice; ?>').innerHTML='<?php echo $row['VariationPrice']; ?>' , updateselectedIDs()" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
+<li onclick="document.getElementById('<?php echo $partname; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>' , document.getElementById('<?php echo $varname; ?>').innerHTML='<?php echo $row['VariationValue']; ?>',document.getElementById('<?php echo $varname; ?>').setAttribute('partid', '<?php echo $PartId; ?>') , document.getElementById('<?php echo $varprice; ?>').innerHTML='<?php echo $row['VariationPrice']; ?>'" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>"></span><?php echo $row['VariationValue']; ?>
 									<span class="tab-space"></span>
@@ -91,7 +92,7 @@ $html .= '</ul>';
 else{
 	?>
 
-<li onclick="document.getElementById('<?php echo $ProductId; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>', updateselectedIDs()" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
+<li onclick="document.getElementById('<?php echo $ProductId; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>'" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>"></span><?php echo $row['VariationValue']; ?>
 									<span class="tab-space"></span>
@@ -125,7 +126,7 @@ $partname = $pprow['PartName'];
 		         	 ?>
 	
 
-<li onclick="document.getElementById('<?php echo $partname; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>' , updateselectedIDs()" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
+<li onclick="document.getElementById('<?php echo $partname; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>'" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>"></span><?php echo $row['VariationValue']; ?>
 									<span class="tab-space"></span>
@@ -136,7 +137,7 @@ $partname = $pprow['PartName'];
 else{
 	?>
 
-<li onclick="document.getElementById('<?php echo $ProductId; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>' , updateselectedIDs()" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
+<li onclick="document.getElementById('<?php echo $ProductId; ?>').src='AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>'" class="text list-group-item col-xs-12 activex select-1" id='price5-1' data-price="400" data-code="plastic">
 								<span class="chat-img pull-left">
 									<img width="50" class="img-responsive" alt="" src="AdminDashboard/uploads/<?php echo $row['VariationPic']; ?>"></span><?php echo $row['VariationValue']; ?>
 									<span class="tab-space"></span>

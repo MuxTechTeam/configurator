@@ -435,7 +435,7 @@ function openpartmaterial(id){
                     }
                 });
          	document.getElementById("mySidenav").style.width = "0%";
-	     document.getElementById("mySidenav-2").style.width = "100%";
+	        document.getElementById("mySidenav-2").style.width = "100%";
 
             }
 
